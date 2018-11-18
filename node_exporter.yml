@@ -1,0 +1,33 @@
+---
+ - hosts: prometheus
+   connection: ssh
+   sudo: yes
+   sudo_user: raman
+   tasks:
+    - name: Creating node exporter directory
+      command: sudo mkdir -p ~/Prometheus/node_exporter
+      ignore_errors: yes
+    - name: Download Node exporter
+      get_url:
+       url: https://github.com/prometheus/node_exporter/releases/download/0.11.0/node_exporter-0.11.0.linux-amd64.tar.gz
+       dest: /home/raman/node_exporter-0.11.0.linux-amd64.tar.gz
+       mode: 0777
+    - name: changing permission
+      command: sudo chmod -R 0777 /home/raman/Prometheus/node_exporter
+    - name: Unarchive node exporter
+      unarchive:
+       src: /home/raman/node_exporter-0.11.0.linux-amd64.tar.gz
+       dest: /home/raman/Prometheus/node_exporter
+       mode: 0775
+       remote_src: yes
+    - name: Create a soft link to the node_exporter binary in /usr/bin
+      command: 	sudo ln -s ~/Prometheus/node_exporter/node_exporter /usr/bin
+      ignore_errors: yes
+    - name: changing permission
+      command: sudo chmod -R 0777 /etc/init/
+    - name:  copying node_exporter.cong file to /etc/init/node_exporter.conf
+      copy:
+       src: /root/prometheus/files/node_exporter.conf
+       dest: /etc/init/node_exporter.conf
+    - name: service start
+      command: sudo service node_exporter restart

@@ -1,0 +1,33 @@
+---
+ - hosts: prometheus
+   connection: ssh
+   sudo: yes
+   sudo_user: raman
+   tasks:
+    - name: updating
+      command: sudo apt-get update -y
+    
+    - name: creating diretory
+      command: sudo mkdir /home/raman/downloads
+      ignore_errors: yes
+
+    - name: Download Prometheus
+      get_url:
+       url: https://github.com/prometheus/prometheus/releases/download/0.15.1/prometheus-0.15.1.linux-amd64.tar.gz
+       dest: /home/raman/prometheus-0.15.1.linux-amd64.tar.gz
+       mode: 0777
+    - name: Creating prometheus directory
+      command: sudo mkdir -p ~/Prometheus/server
+      igoner_errors: yes
+    - name: changing permission
+      command: sudo chmod -R 0777 /home/raman/Prometheus/server 
+    - name: Unarchive prometheus
+      unarchive: 
+       src: /home/raman/prometheus-0.15.1.linux-amd64.tar.gz
+       dest: /home/raman/Prometheus/server
+       mode: 0775
+       remote_src: yes
+    - name: copying prometheus config file
+      copy: 
+       src: /root/prometheus/files/prometheus.yml
+       dest: /home/raman/Prometheus/server/prometheus.yml
