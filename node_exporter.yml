@@ -12,6 +12,7 @@
        url: https://github.com/prometheus/node_exporter/releases/download/0.11.0/node_exporter-0.11.0.linux-amd64.tar.gz
        dest: /home/raman/node_exporter-0.11.0.linux-amd64.tar.gz
        mode: 0777
+       remote_src: yes
     - name: changing permission
       command: sudo chmod -R 0777 /home/raman/Prometheus/node_exporter
     - name: Unarchive node exporter
@@ -27,7 +28,7 @@
       command: sudo chmod -R 0777 /etc/init/
     - name:  copying node_exporter.cong file to /etc/init/node_exporter.conf
       copy:
-       src: /root/prometheus/files/node_exporter.conf
+       src: /root/Prometheus-node_exporter/files/node_exporter.conf
        dest: /etc/init/node_exporter.conf
     - name: service start
       command: sudo service node_exporter restart

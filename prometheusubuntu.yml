@@ -16,6 +16,7 @@
        url: https://github.com/prometheus/prometheus/releases/download/0.15.1/prometheus-0.15.1.linux-amd64.tar.gz
        dest: /home/raman/prometheus-0.15.1.linux-amd64.tar.gz
        mode: 0777
+       remote_src: yes
     - name: Creating prometheus directory
       command: sudo mkdir -p ~/Prometheus/server
       igoner_errors: yes
@@ -29,5 +30,5 @@
        remote_src: yes
     - name: copying prometheus config file
       copy: 
-       src: /root/prometheus/files/prometheus.yml
+       src: /root/Prometheus-node_exporter/files/prometheus.yml
        dest: /home/raman/Prometheus/server/prometheus.yml
